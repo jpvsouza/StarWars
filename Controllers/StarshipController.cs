@@ -43,5 +43,22 @@ namespace StarWars.WebApi.Controllers
             }
             return Ok(starships);
         }
+
+        [HttpGet("/starship/{id}")]
+        public async Task<ActionResult<Starship>> GetStarshipById(int id)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new System.Uri("https://swapi.dev/api/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.GetAsync($"starships/{id}/");
+                if (response.IsSuccessStatusCode)
+                {
+                    return Ok(JsonConvert.DeserializeObject<Starship>(await response.Content.ReadAsStringAsync()));
+                }
+                return BadRequest();
+            }
+        }
     }
 }

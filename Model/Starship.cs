@@ -14,7 +14,7 @@ namespace StarWars.WebApi.Model
         public string Length { get; set; }
         public string MaxAtmospheringSpeed { get; set; }
         public string Crew { get; set; }
-        public int Passengers { get; set; }
+        public string Passengers { get; set; }
         public string CargoCapacity { get; set; }
         public string Consumables { get; set; }
         public string HyperdriveRating { get; set; }
@@ -33,7 +33,7 @@ namespace StarWars.WebApi.Model
 
         public Starship CalculateTravel(int megalight, int passengers)
         {
-            if (passengers>Passengers)
+            if (passengers>Int32.Parse(Passengers))
             {
                 return null;
             }

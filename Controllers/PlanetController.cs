@@ -45,5 +45,23 @@ namespace StarWars.WebApi.Controllers
             return Ok(planets);
         }
 
+        [HttpGet("/planet/{id}")]
+        public async Task<ActionResult<Planet>> GetPlanetById(int id)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new System.Uri("https://swapi.dev/api/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.GetAsync($"planets/{id}/");
+                if(response.IsSuccessStatusCode)
+                {
+                    return Ok(JsonConvert.DeserializeObject<Planet>(await response.Content.ReadAsStringAsync()));
+                }
+                return BadRequest();
+
+            }
+            
+        }
     }
 }
